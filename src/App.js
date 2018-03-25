@@ -16,10 +16,10 @@ class PageNav extends Component {
     return (
       <div>
           <Nav bsStyle="tabs" justified activeKey={1} onSelect={this.handleSelect}>
-            <NavItem style={navbar} eventKey={1} href="/home">Home</NavItem>
-            <NavItem style={navbar} eventKey={2} title="Item">My Account</NavItem>
-            <NavItem style={navbar} eventKey={3} >Shopping Cart</NavItem>
-            <NavItem style={navbar} eventKey={4} >Sign up</NavItem>
+            <NavItem eventKey={1} href="/home">Home</NavItem>
+            <NavItem eventKey={2} title="Item">My Account</NavItem>
+            <NavItem eventKey={3} >Shopping Cart</NavItem>
+            <NavItem eventKey={4} >Sign up</NavItem>
           </Nav>
       </div>
     );
