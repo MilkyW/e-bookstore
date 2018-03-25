@@ -24,7 +24,9 @@ class Excel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.props.initialData
+      data: this.props.initialData,
+      sortby: null,
+      DESC: false,
     };
     this.sort = this.sort.bind(this);
   }
@@ -32,11 +34,16 @@ class Excel extends Component {
   sort(e) {
     var column = e.target.cellIndex;
     var data = Array.from(this.state.data);
+    var DESC = this.state.sortby === column && !this.state.DESC;
     data.sort(function (a, b) {
-      return a[column] > b[column] ? 1: -1;
+      return DESC
+        ? (a[column] < b[column] ? 1 : -1)
+        : (a[column] > b[column] ? 1 : -1);
     });
     this.setState({
-      data:data,
+      data: data,
+      sortby: column,
+      DESC: DESC,
     });
   }
 
@@ -46,7 +53,12 @@ class Excel extends Component {
         <Table striped bordered condensed hover>
           <thead onClick={this.sort}>
             <tr>
-              {this.props.headers.map(function (title, idx) { return <th id="thh" key={idx}>{title}{" "}</th> })}
+              {this.props.headers.map(function (title, idx) {
+                if (this.state.sortby === idx) {
+                  title += this.state.DESC ? '\u2191' : '\u2193'
+                }
+                return (<th id="thh" key={idx}>{title}{" "}</th>);
+              }, this)}
             </tr>
           </thead>
           <tbody>
