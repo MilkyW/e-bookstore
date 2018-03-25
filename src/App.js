@@ -20,18 +20,31 @@ const data = [
 ];
 
 class Excel extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       data: this.props.initialData
     };
+    this.sort = this.sort.bind(this);
+  }
+
+  sort(e) {
+    var column = e.target.cellIndex;
+    var data = Array.from(this.state.data);
+    data.sort(function (a, b) {
+      return a[column] > b[column] ? 1: -1;
+    });
+    this.setState({
+      data:data,
+    });
   }
 
   render() {
     return (
       <div id="table">
         <Table striped bordered condensed hover>
-          <thead>
+          <thead onClick={this.sort}>
             <tr>
               {this.props.headers.map(function (title, idx) { return <th id="thh" key={idx}>{title}{" "}</th> })}
             </tr>
