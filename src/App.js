@@ -27,8 +27,13 @@ class Excel extends Component {
       data: this.props.initialData,
       sortby: null,
       DESC: false,
+      edit: null, //{row: index, cell: index}
+      search: false,
     };
     this.sort = this.sort.bind(this);
+    this.showEditor = this.showEditor.bind(this);
+    this.save = this.save.bind(this);
+    this.renderTable = this.renderTable.bind(this);
   }
 
   sort(e) {
@@ -47,7 +52,28 @@ class Excel extends Component {
     });
   }
 
-  render() {
+  showEditor(e) {
+    this.setState({
+      edit: {
+        row: parseInt(e.target.dataset.row, 10),
+        cell: e.target.cellIndex,
+      }
+    }
+    )
+  }
+
+  save(e){
+    e.preventDefault();
+    var input = e.target.firstChild; 
+    var data = Array.from(this.state.data);
+    data[this.state.edit.row][this.state.edit.cell] = input.value;
+    this.setState({
+      edit: null,
+      data: data,
+    })
+  }
+
+  renderTable() {
     return (
       <div id="table">
         <Table striped bordered condensed hover>
@@ -61,17 +87,50 @@ class Excel extends Component {
               }, this)}
             </tr>
           </thead>
-          <tbody>
-            {this.state.data.map(function (row, idx) {
+          <tbody onDoubleClick={this.showEditor}>
+            {this.state.data.map(function (row, rowidx) {
               return (
-                <tr key={idx}>{row.map(function (cell, idx) {
-                  return (<td key={idx}>{cell}</td>);
-                })}</tr>
+                <tr key={rowidx}>{row.map(function (cell, idx) {
+                  var content = cell;
+                  var edit = this.state.edit;
+                  if (edit && edit.row === rowidx && edit.cell === idx) {
+                    content = <Form onSubmit={this.save}>
+                      <input type="text" defaultValue={content}></input>
+                    </Form>
+                  }
+                  return (<td key={idx} data-row={rowidx}>{content}</td>);
+                },this)}</tr>
               );
-            })}
+            }, this)}
           </tbody>
         </Table>
       </div>
+    );
+  }
+
+  renderToolbar() {
+    return (
+      <Button onClick={this.toggleSearch}>search</Button>
+    );
+  }
+
+  renderSearch() {
+    if (!this.state.search) {
+      return null;
+    }
+    return (
+      <tr onChange={this.search}>{this.props.headers.map(function (_ignore, idx) {
+        return (
+          <td key={idx}><input type="text" data-idx={idx}></input></td>
+        )
+      })}</tr>
+    );
+  }
+
+  render() {
+    return (
+      this.renderTable()
+      //this.renderToolbar()
     );
   }
 }
@@ -102,7 +161,8 @@ class Search extends Component {
     this.state = {
       start: -1,
       end: -1,
-      key: ""
+      key: "",
+      search: false,
     };
   }
   render() {
