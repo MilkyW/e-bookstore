@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
 import './App.css';
 import { Button, ButtonToolbar, Table, Nav, Navbar, NavItem, NavDropdown, DropdownButton, MenuItem, Form, FormGroup, FormControl } from 'react-bootstrap';
+// import {EvenEmitter2} from 'eventemitter2';
 
 const headers = [
   "Book", "Author", "Language", "Published", "Sales"
@@ -29,11 +30,13 @@ class Excel extends Component {
       DESC: false,
       edit: null, //{row: index, cell: index}
       search: false,
+      preSearchData: null,
     };
     this.sort = this.sort.bind(this);
     this.showEditor = this.showEditor.bind(this);
     this.save = this.save.bind(this);
     this.renderTable = this.renderTable.bind(this);
+    this.renderSearch = this.renderSearch.bind(this);
   }
 
   sort(e) {
@@ -62,9 +65,9 @@ class Excel extends Component {
     )
   }
 
-  save(e){
+  save(e) {
     e.preventDefault();
-    var input = e.target.firstChild; 
+    var input = e.target.firstChild;
     var data = Array.from(this.state.data);
     data[this.state.edit.row][this.state.edit.cell] = input.value;
     this.setState({
@@ -72,6 +75,39 @@ class Excel extends Component {
       data: data,
     })
   }
+
+  toggleSearch(){
+    if (this.state.search){
+      this.setState({
+        data: this.state.preSearchData,
+        search: false,
+      });
+      this.state.preSearchData = null;      
+    }
+    else {
+      this.state.preSearchData = this.state.data;
+      this.setState({
+        search: true,
+      });
+    }
+  }
+
+search(e){
+  var needle = e.target.value.toLowerCase();
+  if(!needle){
+    this.setState({
+      data: this.state.preSearchData,
+    });
+    return;
+  }
+  var idx = e.target.dataset.idx;
+  var searchdata = this.state.preSearchData.filter(function(row){
+    return row[idx].toString().toLowerCase().indexOf(needle) > -1;
+  });
+  this.setState({
+    data: searchdata,
+  });
+}
 
   renderTable() {
     return (
@@ -88,6 +124,7 @@ class Excel extends Component {
             </tr>
           </thead>
           <tbody onDoubleClick={this.showEditor}>
+            {this.renderSearch()}
             {this.state.data.map(function (row, rowidx) {
               return (
                 <tr key={rowidx}>{row.map(function (cell, idx) {
@@ -99,7 +136,7 @@ class Excel extends Component {
                     </Form>
                   }
                   return (<td key={idx} data-row={rowidx}>{content}</td>);
-                },this)}</tr>
+                }, this)}</tr>
               );
             }, this)}
           </tbody>
@@ -110,7 +147,9 @@ class Excel extends Component {
 
   renderToolbar() {
     return (
-      <Button onClick={this.toggleSearch}>search</Button>
+      <div>
+        <Button onClick={this.toggleSearch}>search</Button>
+      </div>
     );
   }
 
@@ -129,8 +168,8 @@ class Excel extends Component {
 
   render() {
     return (
+      this.renderToolbar(),
       this.renderTable()
-      //this.renderToolbar()
     );
   }
 }
@@ -173,7 +212,7 @@ class Search extends Component {
             <FormControl id="se0" type="text" placeholder="From" />
             <FormControl id="se0" type="text" placeholder="To" />
             <FormControl id="se1" type="text" placeholder="Keyword" />
-            {/* <Button onClick={this.submitSearch} type="submit">Submit</Button> */}
+            <Button onClick={this.submitSearch} type="submit">Submit</Button>
           </FormGroup>
         </Form>
       </div>
@@ -200,20 +239,25 @@ class MyHeader extends Component {
   }
 }
 
+class MyFooter extends Component{
+  render(){
+    return(
+      <img src={require("./img/m53.gif")} width={136} height={26}/>
+    )
+  }
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <MyHeader />
         <Excel headers={headers} initialData={data} />
+        <MyFooter />
         <div>{}</div>
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       </div>
     );
   }
