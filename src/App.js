@@ -4,7 +4,10 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
 import './App.css';
 import { Button, ButtonToolbar, Table, Nav, Navbar, NavItem, NavDropdown, DropdownButton, MenuItem, Form, FormGroup, FormControl } from 'react-bootstrap';
-// import {EvenEmitter2} from 'eventemitter2';
+import { EvenEmitter3 } from 'eventemitter3';
+
+var EventEmitter = require('eventemitter3');
+var EE = new EventEmitter();
 
 const headers = [
   "Book", "Author", "Language", "Published", "Sales"
@@ -37,6 +40,8 @@ class Excel extends Component {
     this.save = this.save.bind(this);
     this.renderTable = this.renderTable.bind(this);
     this.renderSearch = this.renderSearch.bind(this);
+    this.search = this.search.bind(this);
+    EE.on('pushSearch', this.toggleSearch.bind(this));
   }
 
   sort(e) {
@@ -76,13 +81,13 @@ class Excel extends Component {
     })
   }
 
-  toggleSearch(){
-    if (this.state.search){
+  toggleSearch() {
+    if (this.state.search) {
       this.setState({
         data: this.state.preSearchData,
         search: false,
       });
-      this.state.preSearchData = null;      
+      this.state.preSearchData = null;
     }
     else {
       this.state.preSearchData = this.state.data;
@@ -92,22 +97,22 @@ class Excel extends Component {
     }
   }
 
-search(e){
-  var needle = e.target.value.toLowerCase();
-  if(!needle){
-    this.setState({
-      data: this.state.preSearchData,
+  search(e) {
+    var needle = e.target.value.toLowerCase();
+    if (!needle) {
+      this.setState({
+        data: this.state.preSearchData,
+      });
+      return;
+    }
+    var idx = e.target.dataset.idx;
+    var searchdata = this.state.preSearchData.filter(function (row) {
+      return row[idx].toString().toLowerCase().indexOf(needle) > -1;
     });
-    return;
+    this.setState({
+      data: searchdata,
+    });
   }
-  var idx = e.target.dataset.idx;
-  var searchdata = this.state.preSearchData.filter(function(row){
-    return row[idx].toString().toLowerCase().indexOf(needle) > -1;
-  });
-  this.setState({
-    data: searchdata,
-  });
-}
 
   renderTable() {
     return (
@@ -132,8 +137,7 @@ search(e){
                   var edit = this.state.edit;
                   if (edit && edit.row === rowidx && edit.cell === idx) {
                     content = <Form onSubmit={this.save}>
-                      <input type="text" defaultValue={content}></input>
-                    </Form>
+                      <FormControl id="editInput" type="text" defaultValue={content}/>                    </Form>
                   }
                   return (<td key={idx} data-row={rowidx}>{content}</td>);
                 }, this)}</tr>
@@ -160,7 +164,7 @@ search(e){
     return (
       <tr onChange={this.search}>{this.props.headers.map(function (_ignore, idx) {
         return (
-          <td key={idx}><input type="text" data-idx={idx}></input></td>
+          <td key={idx}><FormControl id="editInput" type="text" data-idx={idx}/></td>
         )
       })}</tr>
     );
@@ -192,9 +196,7 @@ class PageNav extends Component {
   }
 }
 
-class Search extends Component {
-  submitSearch() {
-  }
+class Toolbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -203,16 +205,27 @@ class Search extends Component {
       key: "",
       search: false,
     };
+    this.submitSearch = this.submitSearch.bind(this);
+    this.signIn = this.signIn.bind(this);
+  }
+  signIn(){
+
+  }
+  submitSearch() {
+    EE.emit('pushSearch', 'Toolbar')
   }
   render() {
     return (
       <div>
         <Form componentClass="fieldset" inline justified>
           <FormGroup bsSize="small">
-            <FormControl id="se0" type="text" placeholder="From" />
-            <FormControl id="se0" type="text" placeholder="To" />
-            <FormControl id="se1" type="text" placeholder="Keyword" />
-            <Button onClick={this.submitSearch} type="submit">Submit</Button>
+            {/* <FormControl id="se0" type="text" placeholder="From" />
+            <FormControl id="se0" type="text" placeholder="To" /> */}
+            <FormControl id="se1" type="text" placeholder="UserID" />
+            <FormControl id="se1" type="text" placeholder="Password" />
+            <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
+            <span class="ch12" ></span><span class="ch12" ></span>
+            <Button onClick={this.submitSearch} type="submit">Search</Button>
           </FormGroup>
         </Form>
       </div>
@@ -230,7 +243,7 @@ class MyHeader extends Component {
           <tr width={745}><div id="pn"><PageNav className="mypn" /></div></tr>
           <tr width={745}>
             <td height={70}>
-              <Search />
+              <Toolbar />
             </td>
           </tr>
         </Table >
@@ -239,10 +252,16 @@ class MyHeader extends Component {
   }
 }
 
-class MyFooter extends Component{
-  render(){
-    return(
-      <img src={require("./img/m53.gif")} width={136} height={26}/>
+class MyFooter extends Component {
+  render() {
+    return (
+      <div id="footerdiv">
+        <footer><a href="" class="ml7" > Home</a><span class="ch12" ></span>
+          <a href="" class="ml7" > My Account</a><span class="ch12" ></span>
+          <a href="" class="ml7" > Shopping Cart</a><span class="ch12" ></span>
+          <a href="" class="ml7" >Sign Up</a></footer>
+        <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} />
+      </div>
     )
   }
 }
