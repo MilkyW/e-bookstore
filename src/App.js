@@ -3,8 +3,7 @@ import logo from './logo.svg';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
 import './App.css';
-import { Button, ButtonToolbar, Table, Nav, Navbar, NavItem, NavDropdown, DropdownButton, MenuItem, Form, FormGroup, FormControl } from 'react-bootstrap';
-import { EvenEmitter3 } from 'eventemitter3';
+import { Button, Table, Nav, NavItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 
 var EventEmitter = require('eventemitter3');
 var EE = new EventEmitter();
@@ -87,11 +86,13 @@ class Excel extends Component {
         data: this.state.preSearchData,
         search: false,
       });
-      this.state.preSearchData = null;
+      this.setState({
+        preSearchData: null,
+      });
     }
     else {
-      this.state.preSearchData = this.state.data;
       this.setState({
+        preSearchData: this.state.data,
         search: true,
       });
     }
@@ -200,9 +201,9 @@ class Toolbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      start: -1,
-      end: -1,
-      key: "",
+      userId: null,
+      password: null,
+      wrong: false,
       search: false,
     };
     this.submitSearch = this.submitSearch.bind(this);
@@ -221,8 +222,8 @@ class Toolbar extends Component {
           <FormGroup bsSize="small">
             {/* <FormControl id="se0" type="text" placeholder="From" />
             <FormControl id="se0" type="text" placeholder="To" /> */}
-            <FormControl id="se1" type="text" placeholder="UserID" />
-            <FormControl id="se1" type="text" placeholder="Password" />
+            <FormControl id="se1" type="text" value={this.state.userId} placeholder="UserID" />
+            <FormControl id="se1" type="password" value={this.state.password} secureTextEntry placeholder="Password" />
             <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
             <span class="ch12" ></span><span class="ch12" ></span>
             <Button onClick={this.submitSearch} type="submit">Search</Button>
@@ -260,7 +261,7 @@ class MyFooter extends Component {
           <a href="" class="ml7" > My Account</a><span class="ch12" ></span>
           <a href="" class="ml7" > Shopping Cart</a><span class="ch12" ></span>
           <a href="" class="ml7" >Sign Up</a></footer>
-        <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} />
+        <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
       </div>
     )
   }
