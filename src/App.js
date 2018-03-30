@@ -8,6 +8,8 @@ import { Button, Table, Nav, NavItem, Form, FormGroup, FormControl } from 'react
 var EventEmitter = require('eventemitter3');
 var EE = new EventEmitter();
 
+const logins = new Map([['admin', 'admin']]);
+
 const headers = [
   "Book", "Author", "Language", "Published", "Sales"
 ];
@@ -85,8 +87,6 @@ class Excel extends Component {
       this.setState({
         data: this.state.preSearchData,
         search: false,
-      });
-      this.setState({
         preSearchData: null,
       });
     }
@@ -138,7 +138,7 @@ class Excel extends Component {
                   var edit = this.state.edit;
                   if (edit && edit.row === rowidx && edit.cell === idx) {
                     content = <Form onSubmit={this.save}>
-                      <FormControl id="editInput" type="text" defaultValue={content}/>                    </Form>
+                      <FormControl id="editInput" type="text" defaultValue={content} />                    </Form>
                   }
                   return (<td key={idx} data-row={rowidx}>{content}</td>);
                 }, this)}</tr>
@@ -150,14 +150,6 @@ class Excel extends Component {
     );
   }
 
-  renderToolbar() {
-    return (
-      <div>
-        <Button onClick={this.toggleSearch}>search</Button>
-      </div>
-    );
-  }
-
   renderSearch() {
     if (!this.state.search) {
       return null;
@@ -165,7 +157,7 @@ class Excel extends Component {
     return (
       <tr onChange={this.search}>{this.props.headers.map(function (_ignore, idx) {
         return (
-          <td key={idx}><FormControl id="editInput" type="text" data-idx={idx}/></td>
+          <td key={idx}><FormControl id="editInput" type="text" data-idx={idx} /></td>
         )
       })}</tr>
     );
@@ -173,7 +165,6 @@ class Excel extends Component {
 
   render() {
     return (
-      this.renderToolbar(),
       this.renderTable()
     );
   }
@@ -201,39 +192,63 @@ class Toolbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      login: false,
       userId: null,
       password: null,
       wrong: false,
       search: false,
+      validationState: "null",
     };
     this.submitSearch = this.submitSearch.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.clear = this.clear.bind(this);
   }
-  signIn(){
 
+  clear() {
+    this.setState({
+      validationState: "null",
+    })
   }
+
+  signIn() {
+    var userId = this.state.userId;
+    var password = this.state.password;
+    if (userId === null || password === null
+      || !logins.has(userId) || logins.get(userId) !== password) {
+      this.setState({
+        validationState: "error",
+      })
+      return;
+    }
+    this.setState({
+      login: true,
+    })
+  }
+
   submitSearch() {
     EE.emit('pushSearch', 'Toolbar')
   }
+
   render() {
     return (
       <div>
         <Form componentClass="fieldset" inline justified>
-          <FormGroup bsSize="small">
+          <FormGroup bsSize="small" validationState={this.state.validationState}>
             {/* <FormControl id="se0" type="text" placeholder="From" />
             <FormControl id="se0" type="text" placeholder="To" /> */}
-            <FormControl id="se1" type="text" value={this.state.userId} placeholder="UserID" />
-            <FormControl id="se1" type="password" value={this.state.password} secureTextEntry placeholder="Password" />
-            <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
-            <span class="ch12" ></span><span class="ch12" ></span>
-            <Button onClick={this.submitSearch} type="submit">Search</Button>
+            <FormControl id="se1" onChange={this.clear} type="text" value={this.state.userId} placeholder="UserID" />
+            <FormControl.Feedback />
+            <FormControl id="se1" onChange={this.clear} type="password" value={this.state.password} secureTextEntry placeholder="Password" />
+            <FormControl.Feedback />
           </FormGroup>
+          <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
+          <span class="ch12" ></span><span class="ch12" ></span>
+          <Button onClick={this.submitSearch} type="submit">Search</Button>
         </Form>
-      </div>
+      </div >
     );
   }
 }
-
 
 class MyHeader extends Component {
   render() {
