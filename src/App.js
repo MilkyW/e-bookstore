@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
 import './App.css';
-import { Button, Table, Nav, NavItem, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { ControlLabel, Button, Table, Nav, NavItem, Form, FormGroup, FormControl } from 'react-bootstrap';
 
 var EventEmitter = require('eventemitter3');
 var EE = new EventEmitter();
@@ -171,6 +171,10 @@ class Excel extends Component {
 }
 
 class PageNav extends Component {
+  constructor(props){
+    super(props);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
   handleSelect(selectedKey) {
   }
 
@@ -179,9 +183,9 @@ class PageNav extends Component {
       <div>
         <Nav bsStyle="tabs" justified activeKey={1} onSelect={this.handleSelect}>
           <NavItem eventKey={1} href="/home">Home</NavItem>
-          <NavItem eventKey={2} title="Item">My Account</NavItem>
-          <NavItem eventKey={3} >Shopping Cart</NavItem>
-          <NavItem eventKey={4} >Sign up</NavItem>
+          <NavItem eventKey={2} href="/myAccount">My Account</NavItem>
+          <NavItem eventKey={3} href="/shoppingCart">Shopping Cart</NavItem>
+          <NavItem eventKey={4} href="/signUp">Sign up</NavItem>
         </Nav>
       </div>
     );
@@ -201,7 +205,22 @@ class Toolbar extends Component {
     };
     this.submitSearch = this.submitSearch.bind(this);
     this.signIn = this.signIn.bind(this);
+    this.signOut = this.signOut.bind(this);
     this.clear = this.clear.bind(this);
+    this.handlecp = this.handlecp.bind(this);
+    this.handlecu = this.handlecu.bind(this);
+  }
+
+  handlecu(e) {
+    this.setState({
+      userId: e.target.value,
+    })
+  }
+
+  handlecp(e) {
+    this.setState({
+      password: e.target.value,
+    })
   }
 
   clear() {
@@ -213,8 +232,8 @@ class Toolbar extends Component {
   signIn() {
     var userId = this.state.userId;
     var password = this.state.password;
-    if (userId === null || password === null
-      || !logins.has(userId) || logins.get(userId) !== password) {
+    if ((userId === null) || (password === null)
+      || (!logins.has(userId)) || (logins.get(userId) !== password)) {
       this.setState({
         validationState: "error",
       })
@@ -225,28 +244,48 @@ class Toolbar extends Component {
     })
   }
 
+  signOut(){
+    this.setState({
+      userId: null,
+      password: null,
+      login: false,
+    })
+    this.clear();
+  }
+
   submitSearch() {
     EE.emit('pushSearch', 'Toolbar')
   }
 
   render() {
+    if (!this.state.login) {
+      return (
+        <div>
+          <Form componentClass="fieldset" inline justified>
+            <FormGroup bsSize="small" validationState={this.state.validationState}>
+              <FormControl id="se1" onChange={this.handlecu} type="text" value={this.state.userId} placeholder="UserID" />
+              <FormControl.Feedback />
+              <FormControl id="se1" onChange={this.handlecp} type="password" value={this.state.password} secureTextEntry placeholder="Password" />
+              <FormControl.Feedback />
+            </FormGroup>
+            <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
+            <span class="ch12" ></span><span class="ch12" ></span>
+            <Button onClick={this.submitSearch} type="submit">Search</Button>
+          </Form>
+        </div >
+      );
+    }
     return (
       <div>
         <Form componentClass="fieldset" inline justified>
-          <FormGroup bsSize="small" validationState={this.state.validationState}>
-            {/* <FormControl id="se0" type="text" placeholder="From" />
-            <FormControl id="se0" type="text" placeholder="To" /> */}
-            <FormControl id="se1" onChange={this.clear} type="text" value={this.state.userId} placeholder="UserID" />
-            <FormControl.Feedback />
-            <FormControl id="se1" onChange={this.clear} type="password" value={this.state.password} secureTextEntry placeholder="Password" />
-            <FormControl.Feedback />
-          </FormGroup>
-          <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
+          <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{this.state.userId}!</ControlLabel>
+          <span class="ch13" ></span><span class="ch12" ></span>
+          <Button bsStyle="info" onClick={this.signOut} type="submit">Sign out</Button>
           <span class="ch12" ></span><span class="ch12" ></span>
           <Button onClick={this.submitSearch} type="submit">Search</Button>
         </Form>
       </div >
-    );
+    );    
   }
 }
 
@@ -272,10 +311,10 @@ class MyFooter extends Component {
   render() {
     return (
       <div id="footerdiv">
-        <footer><a href="" class="ml7" > Home</a><span class="ch12" ></span>
-          <a href="" class="ml7" > My Account</a><span class="ch12" ></span>
-          <a href="" class="ml7" > Shopping Cart</a><span class="ch12" ></span>
-          <a href="" class="ml7" >Sign Up</a></footer>
+        <footer><a href="/home" class="ml7" > Home</a><span class="ch12" ></span>
+          <a href="/myAccount" class="ml7" > My Account</a><span class="ch12" ></span>
+          <a href="/shoppingCart" class="ml7" > Shopping Cart</a><span class="ch12" ></span>
+          <a href="/signUp" class="ml7" >Sign Up</a></footer>
         <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
       </div>
     )

@@ -92,6 +92,10 @@ img #footerimg {
   padding-left: 16px;
 }
 
+.ch13 {
+  padding-left: 255px;
+}
+
 .nav>li>a {
   color: rgb(255, 255, 255);
   background-color: rgb(0, 0, 0);
@@ -152,4 +156,9 @@ a:focus, .nav>li.disabled>a:hover {
   cursor: default;
   background-color: #0083B3;
   border: 0px solid #0083B3;
+}
+
+#hellomsg{
+  color: #FFFFFF;
+  font-size: 17px;
 }
