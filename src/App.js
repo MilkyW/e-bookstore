@@ -4,28 +4,28 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../node_modules/bootstrap/dist/css/bootstrap-theme.min.css'
 import './App.css';
 import { ControlLabel, Button, Table, Nav, NavItem, Form, FormGroup, FormControl } from 'react-bootstrap';
+import { Switch, Route } from 'react-router-dom'
 
 var EventEmitter = require('eventemitter3');
 var EE = new EventEmitter();
 
 const logins = new Map([['admin', 'admin']]);
 
-const headers = [
-  "Book", "Author", "Language", "Published", "Sales"
-];
-
-const data = [
-  ["The Lord of the Rings", "J.R.R.Tolkien", "English", "1954-1955", "150 million"],
-  ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", "French", "1943", "140 million"],
-  ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", "English", "1997", "107 millon"],
-  ["And Then There Were None", "Agatha Christie", "English", "1939", "100 million"],
-  ["Dream of the Red Chamber", "Cao Xueqin", "Chinese", "1754-1791", "100 million"],
-  ["The Hobbit", "J.R.R.Tolkien", "English", "1937", "100 million"],
-  ["She: A History of Adventure", "H.Rider Haggard", "English", "1887", "100 million"]
-];
-
 class Excel extends Component {
-
+  static defaultProps = {
+    headers: [
+      "Book", "Author", "Language", "Published", "Sales"
+    ],
+    initialData: [
+      ["The Lord of the Rings", "J.R.R.Tolkien", "English", "1954-1955", "150 million"],
+      ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", "French", "1943", "140 million"],
+      ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", "English", "1997", "107 millon"],
+      ["And Then There Were None", "Agatha Christie", "English", "1939", "100 million"],
+      ["Dream of the Red Chamber", "Cao Xueqin", "Chinese", "1754-1791", "100 million"],
+      ["The Hobbit", "J.R.R.Tolkien", "English", "1937", "100 million"],
+      ["She: A History of Adventure", "H.Rider Haggard", "English", "1887", "100 million"]
+    ],
+};
   constructor(props) {
     super(props);
     this.state = {
@@ -321,12 +321,36 @@ class MyFooter extends Component {
   }
 }
 
+class MyAccount extends Component {
+  render(){
+    return (null);
+  }
+}
+
+class ShoppingCart extends Component {
+  render(){
+    return (null);
+  }
+}
+
+class SignUp extends Component {
+  render(){
+    return (null);
+  }
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <MyHeader />
-        <Excel headers={headers} initialData={data} />
+        <Switch>
+          <Route exact path='/' component={Excel}/>
+          <Route path='/home' component={Excel}/>
+          <Route path='/myAccount' component={MyAccount}/>
+          <Route path='/shoppingCart' component={ShoppingCart}/>
+          <Route path='/signUp' component={SignUp}/>
+        </Switch>
         <MyFooter />
         <div>{}</div>
         <header className="App-header">
