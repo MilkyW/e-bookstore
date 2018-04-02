@@ -6,6 +6,7 @@ import './App.css';
 import { MyHeader } from './MyHeader';
 import { MyFooter } from './MyFooter';
 import { Home } from './Home';
+import { SignUp } from './SignUp';
 import { Switch, Route } from 'react-router-dom'
 
 class MyAccount extends Component {
@@ -20,12 +21,6 @@ class ShoppingCart extends Component {
   }
 }
 
-class SignUp extends Component {
-  render(){
-    return (null);
-  }
-}
-
 class App extends Component {
   render() {
     return (
@@ -33,7 +28,6 @@ class App extends Component {
         <MyHeader />
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/home' component={Home}/>
           <Route path='/myAccount' component={MyAccount}/>
           <Route path='/shoppingCart' component={ShoppingCart}/>
           <Route path='/signUp' component={SignUp}/>

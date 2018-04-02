@@ -102,4 +102,4 @@ class Toolbar extends Component {
     }
   }
 
-  export { Toolbar };
+  export { Toolbar , logins };
