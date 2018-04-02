@@ -1,0 +1,20 @@
+#headerbg {
+    background-position: center center;
+    background-image: url("./img/header.jpg");
+    background-repeat: no-repeat;
+  }
+
+  #pn {
+    margin: auto;
+    padding-right: 270px;
+    width: 745px;
+  }
+  
+  #se0 {
+    width: 80px;
+  }
+  
+  #table {
+    margin: auto;
+    width: 745px;
+  }

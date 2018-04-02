@@ -1,0 +1,24 @@
+
+div #footerdiv {
+    margin: auto;
+    width: 745px;
+  }
+  
+  footer {
+    margin: auto;
+    background-color: #0083B3;
+    color: white;
+    width: 745px;
+    height: 25px;
+  }
+  
+  img #footerimg {
+    padding-left: 500px;
+  }
+  
+  .ml7 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 15px;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
