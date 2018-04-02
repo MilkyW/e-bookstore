@@ -1,8 +1,15 @@
-a{
-  color: white;
+.lk{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 15px;
+  color: #FFFFFF;
+  text-decoration: none;
 }
 
 a:hover{
+  color: white;
+}
+
+a:visited{
   color: white;
 }
 
@@ -23,7 +30,7 @@ div #footerdiv {
     padding-left: 500px;
   }
   
-  .ml7 {
+  Link {
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 15px;
     color: #FFFFFF;

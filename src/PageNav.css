@@ -13,7 +13,7 @@
   }
   
   .nav>li.disabled>a {
-    color: rgb(255, 0, 0)
+    color:  #5B6066;
   }
   
   /* 选中后字色 */
@@ -26,8 +26,8 @@
   }
   
   .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-    background-color: rgb(255, 0, 0);
-    border-color: #ff0000
+    background-color: #5B6066;
+    border-color: #5B6066;
   }
   
   .nav-tabs.nav-justified>.active>a, .nav-tabs.nav-justified>.active>a:focus, .nav-tabs.nav-justified>.active>a:hover {

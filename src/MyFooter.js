@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import './MyFooter.css';
+import { Link } from 'react-router-dom'
 
 class MyFooter extends Component {
     render() {
       return (
         <div id="footerdiv">
-          <footer><a href="/" class="ml7" > Home</a><span class="ch12" ></span>
-            <a href="/myAccount" class="ml7" > My Account</a><span class="ch12" ></span>
-            <a href="/shoppingCart" class="ml7" > Shopping Cart</a><span class="ch12" ></span>
-            <a href="/signUp" class="ml7" >Sign Up</a></footer>
+          <footer><Link to="/" class="lk"> Home</Link><span class="ch12" ></span>
+            <Link to="/myAccount/historyOrder" class="lk"> History Order</Link><span class="ch12" ></span>
+            <Link to="/myAccount/editInfo" class="lk" > Edit Info</Link><span class="ch12" ></span>
+            <Link to="/shoppingCart" class="lk" > Shopping Cart</Link><span class="ch12" ></span>
+            <Link to="/signUp" class="lk" >Sign Up</Link></footer>
           <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
         </div>
       )

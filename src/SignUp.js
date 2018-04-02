@@ -40,60 +40,83 @@ class SignUp extends Component {
   }
 
   submit(){
+    var valid = true;
     var id = this.state.id;
-    if(id === null)
+    if(id === null){
+      valid = false;
     this.setState({
       idvs: "error",
       idmsg: "Please ENTER UserID!"
     });
-    if(logins.has(id))
-    this.setState({
+  }
+    if(logins.has(id)){
+      valid = false;
+      this.setState({
       idvs: "error",
       idmsg: "UserID has already been registered, please TRY ANOTHER!"
     });
+    }
 
-    if(this.checkpw() === 1)
-    this.setState({
+
+    if(this.checkpw() === 1){
+      valid = false;
+      this.setState({
       pwvs: "error",
       pwmsg: "You can ONLY use number(s) and letter(s)!"
     });
-    if(this.checkpw() === 2)
-    this.setState({
+   }
+    if(this.checkpw() === 2){
+      valid = false;
+      this.setState({
       pwvs: "error",
       pwmsg: "Please ENTER password!"
     });
-    if(this.checkpw() === 3)
-    this.setState({
+  }
+    if(this.checkpw() === 3){
+      valid = false;
+      this.setState({
       pwvs: "error",
       pwmsg: "The LENGTH of password should be in 6 ~ 18!"
     });
-    if(this.checkpw() === 4)
-    this.setState({
+  }
+    if(this.checkpw() === 4){
+      valid = false;
+      this.setState({
       pwvs: "error",
       pwmsg: "The password should have BOTH number(s) AND letter(s)!"
     });
+  }
 
-    if(this.checkem() === 1)
-    this.setState({
+    if(this.checkem() === 1){
+      valid = false;
+      this.setState({
       emvs: "error",
       emmsg: "INVALID email address FORMAT!"
     });
-    if(this.checkem() === 2)
-    this.setState({
+  }
+    if(this.checkem() === 2){
+      valid = false;
+      this.setState({
       emvs: "error",
       emmsg: "Please ENTER email address!"
     });
+    }
 
-    if(this.checkmn() === 1)
-    this.setState({
+    if(this.checkmn() === 1){
+      valid = false;
+      this.setState({
       mnvs: "error",
       mnmsg: "INVALID mobile phone number FORMAT!"
     });
-    if(this.checkmn() === 2)
-    this.setState({
-      mnvs: "error",
-      mnmsg: "Please ENTER mobile phone number!"
-    });
+  }
+    if(this.checkmn() === 2){
+      valid = false;
+      this.setState({
+        mnvs: "error",
+        mnmsg: "Please ENTER mobile phone number!"
+      });
+    }
+    if (valid) {}
   }
 
   checkpw(){

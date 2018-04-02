@@ -6,10 +6,11 @@ import './App.css';
 import { MyHeader } from './MyHeader';
 import { MyFooter } from './MyFooter';
 import { Home } from './Home';
+import { EditInfo } from './EditInfo';
 import { SignUp } from './SignUp';
 import { Switch, Route } from 'react-router-dom'
 
-class MyAccount extends Component {
+class HistoryOrder extends Component {
   render(){
     return (null);
   }
@@ -28,7 +29,8 @@ class App extends Component {
         <MyHeader />
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/myAccount' component={MyAccount}/>
+          <Route path='/myAccount/historyOrder' component={HistoryOrder}/>
+          <Route path='/myAccount/editInfo' component={EditInfo}/>
           <Route path='/shoppingCart' component={ShoppingCart}/>
           <Route path='/signUp' component={SignUp}/>
         </Switch>
