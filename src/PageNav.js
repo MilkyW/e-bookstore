@@ -58,7 +58,18 @@ class PageNav extends Component {
   }
 
   render() {
-    if (this.state.login === false || this.state.power === 1)
+    if (this.state.login === false)
+    return (
+      <div>
+        <Redirect to="/home"/>
+        <Nav bsStyle="tabs" justified activeKey={this.state.ak} onSelect={this.handleSelect}>
+          <NavItem eventKey={1} class="llk"><Link to="/home">Home</Link></NavItem>
+          <NavItem eventKey={4} class="llk"><Link to="/signUp">Sign up</Link></NavItem>
+        </Nav>
+      </div>
+    );
+
+    if (this.state.login === true && this.state.power === 1)
     return (
       <div>
         <Redirect to="/home"/>
@@ -69,7 +80,6 @@ class PageNav extends Component {
           <MenuItem eventKey="4.2" class="lllk"><Link to="/myAccount/editInfo" class="down">Edit Info</Link></MenuItem>
           </NavDropdown>
           <NavItem eventKey={3} class="llk"><Link to="/shoppingCart">Shopping Cart</Link></NavItem>
-          <NavItem eventKey={4} class="llk"><Link to="/signUp">Sign up</Link></NavItem>
         </Nav>
       </div>
     );

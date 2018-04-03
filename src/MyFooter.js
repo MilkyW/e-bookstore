@@ -45,17 +45,26 @@ class MyFooter extends Component {
   }
 
     render() {
-      if (this.state.login === false || this.state.power === 1)
+      if (this.state.login === false)
+      return (
+        <div id="footerdiv">
+          <footer><Link to="/home" id="lk"> Home</Link><span class="ch12" ></span>
+            <Link to="/signUp" id="lk" >Sign Up</Link></footer>
+          <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
+        </div>
+      );
+
+      if (this.state.login === true && this.state.power === 1)
       return (
         <div id="footerdiv">
           <footer><Link to="/home" id="lk"> Home</Link><span class="ch12" ></span>
             <Link to="/myAccount/historyOrder" id="lk"> History Order</Link><span class="ch12" ></span>
             <Link to="/myAccount/editInfo" id="lk" > Edit Info</Link><span class="ch12" ></span>
-            <Link to="/shoppingCart" id="lk" > Shopping Cart</Link><span class="ch12" ></span>
-            <Link to="/signUp" id="lk" >Sign Up</Link></footer>
+            <Link to="/shoppingCart" id="lk" > Shopping Cart</Link></footer>
           <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
         </div>
       );
+
       if (this.state.login === true && this.state.power === 0)
       return (
         <div id="footerdiv">
