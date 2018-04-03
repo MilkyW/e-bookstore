@@ -1,22 +1,38 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom'
 import { EE } from './Home';
 import './Toolbar.css';
 
-const logins = new Map([['admin', 'admin']]);
+var EventEmitter = require('eventemitter3');
+var EE0 = new EventEmitter();
+
+const logins = new Map([
+  ['admin', ['admin', 0]],
+  ['customer', ['customer', 1]]
+]);
+
+var login = null;
 
 class Toolbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
         login: false,
-        userId: null,
+        userId: login,
         password: null,
         wrong: false,
         search: false,
         validationState: "null",
       };
       this.submitSearch = this.submitSearch.bind(this);
+      EE0.on('signIn', function(arg1){
+          this.setState({
+            login: true,
+            userId: arg1,
+          });
+          login = arg1;
+      }.bind(this));
       this.signIn = this.signIn.bind(this);
       this.signOut = this.signOut.bind(this);
       this.clear = this.clear.bind(this);
@@ -41,12 +57,12 @@ class Toolbar extends Component {
         validationState: "null",
       })
     }
-  
+
     signIn() {
       var userId = this.state.userId;
       var password = this.state.password;
       if ((userId === null) || (password === null)
-        || (!logins.has(userId)) || (logins.get(userId) !== password)) {
+        || (!logins.has(userId)) || (logins.get(userId)[0] !== password)) {
         this.setState({
           validationState: "error",
         })
@@ -54,7 +70,13 @@ class Toolbar extends Component {
       }
       this.setState({
         login: true,
-      })
+      });
+      login = this.state.userId;
+      EE0.emit('signIn', this.state.userId);
+      if (logins.get(userId)[1] === 0)
+        EE0.emit('admin');
+      if (logins.get(userId)[1] === 1)
+        EE0.emit('customer');
     }
   
     signOut(){
@@ -62,12 +84,13 @@ class Toolbar extends Component {
         userId: null,
         password: null,
         login: false,
-      })
+      });
+      EE0.emit('signOut');
       this.clear();
     }
   
     submitSearch() {
-      EE.emit('pushSearch', 'Toolbar')
+      EE.emit('pushSearch');
     }
   
     render() {
@@ -90,10 +113,11 @@ class Toolbar extends Component {
       }
       return (
         <div>
+          <Redirect to="/home" push/>
           <Form componentClass="fieldset" inline justified>
-            <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{this.state.userId}!</ControlLabel>
+            <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{login}!</ControlLabel>
             <span class="ch13" ></span><span class="ch12" ></span>
-            <Button bsStyle="info" onClick={this.signOut} type="submit">Sign out</Button>
+            <Button bsStyle="info" onClick={this.signOut} href="/" type="submit">Sign out</Button>
             <span class="ch12" ></span><span class="ch12" ></span>
             <Button onClick={this.submitSearch} type="submit">Search</Button>
           </Form>
@@ -102,4 +126,4 @@ class Toolbar extends Component {
     }
   }
 
-  export { Toolbar , logins };
+  export { Toolbar , logins, login, EE0 };

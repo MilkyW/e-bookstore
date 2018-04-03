@@ -8,7 +8,7 @@ import { MyFooter } from './MyFooter';
 import { Home } from './Home';
 import { EditInfo } from './EditInfo';
 import { SignUp } from './SignUp';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom';
 
 class HistoryOrder extends Component {
   render(){
@@ -22,17 +22,38 @@ class ShoppingCart extends Component {
   }
 }
 
+class Storehouse extends Component {
+  render(){
+    return (null);
+  }
+}
+
+class Users extends Component {
+  render(){
+    return (null);
+  }
+}
+
+class Sales extends Component {
+  render(){
+    return (null);
+  }
+}
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <MyHeader />
         <Switch>
-          <Route exact path='/' component={Home}/>
+          <Route path='/home' component={Home}/>
           <Route path='/myAccount/historyOrder' component={HistoryOrder}/>
           <Route path='/myAccount/editInfo' component={EditInfo}/>
           <Route path='/shoppingCart' component={ShoppingCart}/>
           <Route path='/signUp' component={SignUp}/>
+          <Route path="/storehouse" component={Storehouse}/>
+          <Route path="/users" component={Users}/>
+          <Route path="/sales" component={Sales}/>
         </Switch>
         <MyFooter />
         <div>{}</div>

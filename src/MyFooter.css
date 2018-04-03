@@ -1,16 +1,8 @@
-.lk{
+#lk{
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-size: 15px;
   color: #FFFFFF;
   text-decoration: none;
-}
-
-.lk > a:hover{
-  color: white;
-}
-
-.lk > a:visited{
-  color: white;
 }
 
 div #footerdiv {

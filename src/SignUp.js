@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { HelpBlock, Form, FormControl, FormGroup, Button, ControlLabel } from 'react-bootstrap';
 import './SignUp.css';
-import { logins } from './Toolbar';
+import { logins, EE0 } from './Toolbar';
 
 function FieldGroup({ vs, id, label, help, ...props }) {
     return (
@@ -17,6 +17,7 @@ class SignUp extends Component {
   constructor(props){
     super(props);
     this.state = {
+      btstyle: null,
       id: null,
       pw: null,
       em: null,
@@ -116,7 +117,13 @@ class SignUp extends Component {
         mnmsg: "Please ENTER mobile phone number!"
       });
     }
-    if (valid) {}
+    if (valid) {
+      this.setState({
+        btstyle: "submit",
+      })
+      EE0.emit('signIn', this.state.id);
+      EE0.emit('customer', 'Toolbar');
+    }
   }
 
   checkpw(){
@@ -252,7 +259,7 @@ class SignUp extends Component {
       onChange={this.hdmn}
     />
 
-    <div id="sm"><Button bsSize="large" id="smb" onClick={this.submit}>
+    <div id="sm"><Button bsSize="large" id="smb" type={this.state.btstyle} onClick={this.submit}>
       Submit
     </Button></div>
           </Form>
