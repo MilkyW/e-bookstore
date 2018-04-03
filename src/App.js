@@ -7,6 +7,7 @@ import { MyHeader } from './MyHeader';
 import { MyFooter } from './MyFooter';
 import { Home } from './Home';
 import { EditInfo } from './EditInfo';
+import { ShoppingCart } from './ShoppingCart';
 import { SignUp } from './SignUp';
 import { Storehouse } from './Storehouse';
 import { Users } from './Users';
@@ -14,12 +15,6 @@ import { Sales } from './Sales';
 import { Switch, Route } from 'react-router-dom';
 
 class HistoryOrder extends Component {
-  render(){
-    return (null);
-  }
-}
-
-class ShoppingCart extends Component {
   render(){
     return (null);
   }

@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
-import { Table, Form, FormControl, Button } from 'react-bootstrap';
-import './Home.css';
-import { loginID } from "./Toolbar";
-
-var EventEmitter = require('eventemitter3');
-var EE = new EventEmitter();
+import { Table, Form, FormControl, Button , ListGroup, ListGroupItem } from 'react-bootstrap';
+import './ShoppingCart.css';
+import { EE } from './Home';
 
 const useful = 4;
+const quan = 3;
 const cart = 4;
 
-class Home extends Component {
+class ShoppingCart extends Component {
     static defaultProps = {
       headers: [
-        "Book", "Author", "Published", "Price", "Buy"
+        "Book", "Author", "Price", "Quantity", "Buy"
       ],
       initialData: [
-        ["The Lord of the Rings", "J.R.R.Tolkien", "1954-1955", 11, ""],
-        ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", "1943", 22, ""],
-        ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", "1997", 33, ""],
-        ["And Then There Were None", "Agatha Christie", "1939", 44, ""],
-        ["Dream of the Red Chamber", "Cao Xueqin", "1754-1791", 55, ""],
-        ["The Hobbit", "J.R.R.Tolkien", "1937", 66, ""],
-        ["She: A History of Adventure", "H.Rider Haggard", "1887", 77, ""]
+        ["The Lord of the Rings", "J.R.R.Tolkien", 11, 2, ""],
+        ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", 22, 2, ""],
+        ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", 33, 1, ""],
+        ["And Then There Were None", "Agatha Christie", 44, 3, ""],
+        ["Dream of the Red Chamber", "Cao Xueqin", 55, 5, ""],
+        ["The Hobbit", "J.R.R.Tolkien", 66, 4, ""],
+        ["She: A History of Adventure", "H.Rider Haggard", 77, 1, ""]
       ],
   };
     constructor(props) {
@@ -43,8 +41,32 @@ class Home extends Component {
       this.renderTable = this.renderTable.bind(this);
       this.renderSearch = this.renderSearch.bind(this);
       this.search = this.search.bind(this);
-      this.addToCart = this.addToCart.bind(this);
+      this.deleteItem = this.deleteItem.bind(this);
+      this.showEditor = this.showEditor.bind(this);
+      this.save = this.save.bind(this);
       EE.on('pushSearch', this.toggleSearch.bind(this));
+    }
+
+    showEditor(e) {
+        if (e.target.cellIndex === quan)
+      this.setState({
+        edit: {
+          row: parseInt(e.target.dataset.row, 10),
+          cell: e.target.cellIndex,
+        }
+      }
+      )
+    }
+  
+    save(e) {
+      e.preventDefault();
+      var input = e.target.firstChild;
+      var data = Array.from(this.state.data);
+      data[this.state.edit.row][this.state.edit.cell] = input.value;
+      this.setState({
+        edit: null,
+        data: data,
+      })
     }
   
     sort(e) {
@@ -99,14 +121,14 @@ class Home extends Component {
       });
     }
 
-    addToCart(e){
-      // var data = this.state.data;
-      // data.splice(e.target.getAttribute('row'), 1);
-      // this.setState({
-      //     data: data,
-      // })
-      // this.render();
-  }
+    deleteItem(e){
+        var data = this.state.data;
+        data.splice(e.target.getAttribute('row'), 1);
+        this.setState({
+            data: data,
+        })
+        this.render();
+    }
   
     renderTable() {
       return (
@@ -139,7 +161,7 @@ class Home extends Component {
                     if (idx === cart)
                     return (
                       <td key={idx} data-row={rowidx}>
-                      <Button row={rowidx} bsStyle="primary" bsSize="xsmall" onClick={this.addToCart}>Add To Cart</Button>
+                      <Button row={rowidx} bsStyle="danger" bsSize="xsmall" onClick={this.deleteItem}>Delete</Button>
                       </td>
                     );
                   }, this)}</tr>
@@ -147,6 +169,8 @@ class Home extends Component {
               }, this)}
             </tbody>
           </Table>
+          {this.renderSum()}
+          <div id="sm"><Button block bsSize="large" onClick={this.submit}>Checkout</Button></div>
         </div>
       );
     }
@@ -164,6 +188,18 @@ class Home extends Component {
       );
     }
   
+    renderSum(){
+        var sum = 0;
+        for(var i = 0; i < this.state.data.length; i++){
+          sum += this.state.data[i][quan] * this.state.data[i][quan - 1];
+        }
+        return(
+          <ListGroup>
+          <ListGroupItem bsStyle="info">Total: {sum}</ListGroupItem>
+        </ListGroup>
+        );
+      }
+
     render() {
       return (
         this.renderTable()
@@ -171,4 +207,4 @@ class Home extends Component {
     }
   }
 
-  export {Home, EE};
+  export {ShoppingCart};

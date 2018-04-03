@@ -39,7 +39,7 @@ class EditInfo extends Component {
       />
     <FormGroup controlId="formControlsTextarea">
       <ControlLabel>Brief Introduction</ControlLabel>
-      <FormControl componentClass="textarea" placeholder="textarea" />
+      <FormControl componentClass="textarea" placeholder="Introduce your favourite book breifly" />
     </FormGroup>
       <div id="sm">
       <Button bsSize="large" id="smb" onClick={this.submit}>
