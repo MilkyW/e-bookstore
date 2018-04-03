@@ -92,7 +92,11 @@ class Toolbar extends Component {
     submitSearch() {
       EE.emit('pushSearch');
     }
-  
+
+    add(){
+      EE.emit('add');
+    } 
+
     render() {
       if (!this.state.login) {
         return (
@@ -107,6 +111,7 @@ class Toolbar extends Component {
               <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
               <span class="ch12" ></span><span class="ch12" ></span>
               <Button onClick={this.submitSearch} type="submit">Search</Button>
+              <Button onClick={this.add}>Add</Button>
             </Form>
           </div >
         );

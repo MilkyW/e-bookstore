@@ -24,7 +24,7 @@ class EditInfo extends Component {
 
     render(){
       return (
-        <Form>
+        <Form id="formei">
         <FieldGroup
         id="formControlsFile"
         type="file"

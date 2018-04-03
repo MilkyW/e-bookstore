@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Form, FormControl } from 'react-bootstrap';
+import { Table, Form, FormControl, FormGroup } from 'react-bootstrap';
 import './Home.css';
 
 var EventEmitter = require('eventemitter3');
@@ -23,20 +23,28 @@ class Home extends Component {
     constructor(props) {
       super(props);
       this.state = {
+        btstyle: null,
         data: this.props.initialData,
         sortby: null,
         DESC: false,
         edit: null, //{row: index, cell: index}
         search: false,
+        add: false,
         preSearchData: null,
+        needles: new Array(this.props.headers.length),
+        adds: new Array(this.props.headers.length),
+        addvs: new Array(this.props.headers.length),
       };
       this.sort = this.sort.bind(this);
       this.showEditor = this.showEditor.bind(this);
       this.save = this.save.bind(this);
       this.renderTable = this.renderTable.bind(this);
       this.renderSearch = this.renderSearch.bind(this);
+      this.renderAdd = this.renderAdd.bind(this);
       this.search = this.search.bind(this);
+      this.add = this.add.bind(this);
       EE.on('pushSearch', this.toggleSearch.bind(this));
+      EE.on('add', this.toggleAdd.bind(this));
     }
   
     sort(e) {
@@ -91,21 +99,66 @@ class Home extends Component {
         });
       }
     }
+
+    toggleAdd() {
+      if (this.state.add) {
+        var allempty = true;
+        var allfull = true;
+        var data = this.state.data;
+        for (var i = 0; i < this.state.adds.length; i++){
+          if (this.state.adds[i] !== null){
+            allempty = false;
+          }
+          else{
+            allfull = false;
+          }
+        }
+        if (allempty)
+        this.setState({
+          add: false,
+        });
+        if (allfull){
+          data.push(this.state.adds);
+          this.setState({
+            add: false,
+            data: data,
+            adds: new Array(this.props.headers.length),
+          });
+        }
+      }
+      else {
+        for (var i = 0; i < this.props.headers.length; i++){
+          this.state.adds[i] = null;
+        }
+        this.setState({
+          add: true,
+        });
+      }
+    }
+
+    add(e){
+      var needle = e.target.value;
+      var adds = this.state.adds;
+      adds[e.target.dataset.idx] = needle;
+
+    }
   
     search(e) {
       var needle = e.target.value.toLowerCase();
-      if (!needle) {
-        this.setState({
-          data: this.state.preSearchData,
-        });
-        return;
+      var needles = this.state.needles;
+      var data = this.state.preSearchData;
+      needles[e.target.dataset.idx] = needle;
+      for (var i = 0; i < needles.length; i++){
+        needle = needles[i];
+        if (needle){
+          data = data.filter(function (row) {
+            return row[i].toString().toLowerCase().indexOf(needle) > -1;
+          });
+        }
       }
-      var idx = e.target.dataset.idx;
-      var searchdata = this.state.preSearchData.filter(function (row) {
-        return row[idx].toString().toLowerCase().indexOf(needle) > -1;
-      });
       this.setState({
-        data: searchdata,
+        data: data,
+        needles: needles, 
       });
     }
   
@@ -124,6 +177,7 @@ class Home extends Component {
               </tr>
             </thead>
             <tbody onDoubleClick={this.showEditor}>
+              {this.renderAdd()}
               {this.renderSearch()}
               {this.state.data.map(function (row, rowidx) {
                 return (
@@ -144,6 +198,19 @@ class Home extends Component {
       );
     }
   
+    renderAdd() {
+      if (!this.state.add) {
+        return null;
+      }
+      return (
+        <tr onChange={this.add}>{this.props.headers.map(function (_ignore, idx) {
+          return (
+            <td key={idx}><FormGroup validationState={this.state.addvs[idx]}><FormControl id="editInput" type="text" data-idx={idx} /></FormGroup></td>
+          )
+        }.bind(this))}</tr>
+      );
+    }
+
     renderSearch() {
       if (!this.state.search) {
         return null;
