@@ -4,8 +4,6 @@ import { Link, Redirect } from 'react-router-dom'
 import './PageNav.css';
 import { EE0 } from './Toolbar';
 
-window.page = 1;
-
 class PageNav extends Component {
   constructor(props){
     super(props);
@@ -91,7 +89,7 @@ class PageNav extends Component {
           <NavItem eventKey={1} class="llk"><Link to="/home">Home</Link></NavItem>
           <NavItem eventKey={2} class="llk"><Link to="/storehouse">Storehouse</Link></NavItem>
           <NavItem eventKey={3} class="llk"><Link to="/users">Users</Link></NavItem>
-          <NavItem eventKey={4} class="llk"><Link to="/salse">Sales</Link></NavItem>
+          <NavItem eventKey={4} class="llk"><Link to="/sales">Sales</Link></NavItem>
         </Nav>
       </div>
     );

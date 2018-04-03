@@ -12,14 +12,14 @@ const logins = new Map([
   ['customer', ['customer', 1]]
 ]);
 
-var login = null;
+var loginID = null;
 
 class Toolbar extends Component {
     constructor(props) {
       super(props);
       this.state = {
         login: false,
-        userId: login,
+        userId: loginID,
         password: null,
         wrong: false,
         search: false,
@@ -31,7 +31,7 @@ class Toolbar extends Component {
             login: true,
             userId: arg1,
           });
-          login = arg1;
+          loginID = arg1;
       }.bind(this));
       this.signIn = this.signIn.bind(this);
       this.signOut = this.signOut.bind(this);
@@ -71,7 +71,7 @@ class Toolbar extends Component {
       this.setState({
         login: true,
       });
-      login = this.state.userId;
+      loginID = this.state.userId;
       EE0.emit('signIn', this.state.userId);
       if (logins.get(userId)[1] === 0)
         EE0.emit('admin');
@@ -111,24 +111,40 @@ class Toolbar extends Component {
               <Button bsStyle="info" onClick={this.signIn} type="submit">Sign in</Button>
               <span class="ch12" ></span><span class="ch12" ></span>
               <Button onClick={this.submitSearch} type="submit">Search</Button>
-              <Button onClick={this.add}>Add</Button>
             </Form>
           </div >
         );
       }
+
+      if (this.state.login && logins.get(loginID)[1] === 1)
       return (
         <div>
           <Redirect to="/home" push/>
           <Form componentClass="fieldset" inline justified>
-            <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{login}!</ControlLabel>
+            <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{loginID}!</ControlLabel>
             <span class="ch13" ></span><span class="ch12" ></span>
             <Button bsStyle="info" onClick={this.signOut} href="/" type="submit">Sign out</Button>
             <span class="ch12" ></span><span class="ch12" ></span>
             <Button onClick={this.submitSearch} type="submit">Search</Button>
           </Form>
         </div >
+      );   
+
+      if (this.state.login && logins.get(loginID)[1] === 0)
+      return (
+        <div>
+          <Redirect to="/home" push/>
+          <Form componentClass="fieldset" inline justified>
+            <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{loginID}!</ControlLabel>
+            <span class="ch13" ></span><span class="ch12" ></span>
+            <Button bsStyle="info" onClick={this.signOut} href="/" type="submit">Sign out</Button>
+            <span class="ch12" ></span><span class="ch12" ></span>
+            <Button onClick={this.submitSearch} type="submit">Search</Button>
+            <Button onClick={this.add}>Add</Button>
+          </Form>
+        </div >
       );    
     }
   }
 
-  export { Toolbar , logins, login, EE0 };
+  export { Toolbar , logins, loginID, EE0 };

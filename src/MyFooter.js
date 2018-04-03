@@ -71,7 +71,7 @@ class MyFooter extends Component {
           <footer><Link to="/home" id="lk"> Home</Link><span class="ch12" ></span>
             <Link to="/storehouse" id="lk"> Storehouse</Link><span class="ch12" ></span>
             <Link to="/users" id="lk" >Users</Link><span class="ch12" ></span>
-            <Link to="/salse" id="lk" >Sales</Link></footer>
+            <Link to="/sales" id="lk" >Sales</Link></footer>
           <img id="footerimg" src={require("./img/m53.gif")} width={136} height={26} alt="footer img" />
         </div>
       );

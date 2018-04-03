@@ -8,6 +8,8 @@ import { MyFooter } from './MyFooter';
 import { Home } from './Home';
 import { EditInfo } from './EditInfo';
 import { SignUp } from './SignUp';
+import { Storehouse } from './Storehouse';
+import { Sales } from './Sales';
 import { Switch, Route } from 'react-router-dom';
 
 class HistoryOrder extends Component {
@@ -22,19 +24,7 @@ class ShoppingCart extends Component {
   }
 }
 
-class Storehouse extends Component {
-  render(){
-    return (null);
-  }
-}
-
 class Users extends Component {
-  render(){
-    return (null);
-  }
-}
-
-class Sales extends Component {
   render(){
     return (null);
   }

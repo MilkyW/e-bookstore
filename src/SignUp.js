@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { HelpBlock, Form, FormControl, FormGroup, Button, ControlLabel } from 'react-bootstrap';
-//import './SignUp.css';
+import './SignUp.css';
 import { logins, EE0 } from './Toolbar';
 
 function FieldGroup({ vs, id, label, help, ...props }) {

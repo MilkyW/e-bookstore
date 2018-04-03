@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import { Table, Form, FormControl} from 'react-bootstrap';
-import './Home.css';
+import './Sales.css';
+import { Table, Form, FormControl, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { EE } from './Home';
 
-var EventEmitter = require('eventemitter3');
-var EE = new EventEmitter();
-
-class Home extends Component {
+class Sales extends Component {
     static defaultProps = {
       headers: [
         "Book", "Author", "Language", "Published", "Sales"
       ],
       initialData: [
-        ["The Lord of the Rings", "J.R.R.Tolkien", "English", "1954-1955", "150 million"],
-        ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", "French", "1943", "140 million"],
-        ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", "English", "1997", "107 millon"],
-        ["And Then There Were None", "Agatha Christie", "English", "1939", "100 million"],
-        ["Dream of the Red Chamber", "Cao Xueqin", "Chinese", "1754-1791", "100 million"],
-        ["The Hobbit", "J.R.R.Tolkien", "English", "1937", "100 million"],
-        ["She: A History of Adventure", "H.Rider Haggard", "English", "1887", "100 million"]
+        ["The Lord of the Rings", "J.R.R.Tolkien", "English", "1954-1955", "150"],
+        ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupery", "French", "1943", "140"],
+        ["Harry Potter and the Philosopher's Stone", "J.K.Rowling", "English", "1997", "107"],
+        ["And Then There Were None", "Agatha Christie", "English", "1939", "100"],
+        ["Dream of the Red Chamber", "Cao Xueqin", "Chinese", "1754-1791", "100"],
+        ["The Hobbit", "J.R.R.Tolkien", "English", "1937", "100"],
+        ["She: A History of Adventure", "H.Rider Haggard", "English", "1887", "100"]
       ],
   };
     constructor(props) {
@@ -38,6 +36,7 @@ class Home extends Component {
       this.sort = this.sort.bind(this);
       this.renderTable = this.renderTable.bind(this);
       this.renderSearch = this.renderSearch.bind(this);
+      this.renderSales = this.renderSales.bind(this);
       this.search = this.search.bind(this);
       EE.on('pushSearch', this.toggleSearch.bind(this));
     }
@@ -125,6 +124,7 @@ class Home extends Component {
               }, this)}
             </tbody>
           </Table>
+          {this.renderSales()}
         </div>
       );
     }
@@ -141,6 +141,18 @@ class Home extends Component {
         })}</tr>
       );
     }
+
+    renderSales(){
+      var sum = 0;
+      for(var i = 0; i < this.state.data.length; i++){
+        sum += parseInt(this.state.data[i][4]);
+      }
+      return(
+        <ListGroup>
+        <ListGroupItem bsStyle="info">Sales: {sum}</ListGroupItem>
+      </ListGroup>
+      );
+    }
   
     render() {
       return (
@@ -149,4 +161,4 @@ class Home extends Component {
     }
   }
 
-  export {Home, EE};
+  export { Sales };
