@@ -5,11 +5,11 @@
   text-decoration: none;
 }
 
-a:hover{
+.lk > a:hover{
   color: white;
 }
 
-a:visited{
+.lk > a:visited{
   color: white;
 }
 

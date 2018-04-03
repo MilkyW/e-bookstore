@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 import './PageNav.css';
 
 window.page = 1;
@@ -22,14 +23,14 @@ class PageNav extends Component {
   render() {
     return (
       <div>
-        <Nav bsStyle="tabs" justified activeHref={window.location.pathname} onSelect={this.handleSelect}>
-          <NavItem eventKey={1} href="/">Home</NavItem>
+        <Nav bsStyle="tabs" justified activeKey={this.state.ak} onSelect={this.handleSelect}>
+          <NavItem eventKey={1} class="llk"><Link to="/">Home</Link></NavItem>
           <NavDropdown eventKey="4" title="My Account" id="nav-dropdown">
-          <MenuItem eventKey="4.1" href="/myAccount/historyOrder">History Order</MenuItem>
-          <MenuItem eventKey="4.2" href="/myAccount/editInfo">Edit Info</MenuItem>
+          <MenuItem eventKey="4.1" class="lllk"><Link to="/myAccount/historyOrder" class="down">History Order</Link></MenuItem>
+          <MenuItem eventKey="4.2" class="lllk"><Link to="/myAccount/editInfo" class="down">Edit Info</Link></MenuItem>
           </NavDropdown>
-          <NavItem eventKey={3} href="/shoppingCart">Shopping Cart</NavItem>
-          <NavItem eventKey={4} href="/signUp">Sign up</NavItem>
+          <NavItem eventKey={3} class="llk"><Link to="/shoppingCart">Shopping Cart</Link></NavItem>
+          <NavItem eventKey={4} class="llk"><Link to="/signUp">Sign up</Link></NavItem>
         </Nav>
       </div>
     );
