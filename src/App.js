@@ -9,6 +9,7 @@ import { Home } from './Home';
 import { EditInfo } from './EditInfo';
 import { SignUp } from './SignUp';
 import { Storehouse } from './Storehouse';
+import { Users } from './Users';
 import { Sales } from './Sales';
 import { Switch, Route } from 'react-router-dom';
 
@@ -19,12 +20,6 @@ class HistoryOrder extends Component {
 }
 
 class ShoppingCart extends Component {
-  render(){
-    return (null);
-  }
-}
-
-class Users extends Component {
   render(){
     return (null);
   }

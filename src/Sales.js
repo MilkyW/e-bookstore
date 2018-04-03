@@ -145,7 +145,7 @@ class Sales extends Component {
     renderSales(){
       var sum = 0;
       for(var i = 0; i < this.state.data.length; i++){
-        sum += parseInt(this.state.data[i][4]);
+        sum += parseInt(this.state.data[i][4], 10);
       }
       return(
         <ListGroup>

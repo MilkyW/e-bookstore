@@ -68,7 +68,7 @@ class MyFooter extends Component {
       if (this.state.login === true && this.state.power === 0)
       return (
         <div id="footerdiv">
-          <footer><Link to="/home" id="lk"> Home</Link><span class="ch12" ></span>
+          <footer>
             <Link to="/storehouse" id="lk"> Storehouse</Link><span class="ch12" ></span>
             <Link to="/users" id="lk" >Users</Link><span class="ch12" ></span>
             <Link to="/sales" id="lk" >Sales</Link></footer>

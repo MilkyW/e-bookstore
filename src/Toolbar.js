@@ -133,7 +133,7 @@ class Toolbar extends Component {
       if (this.state.login && logins.get(loginID)[1] === 0)
       return (
         <div>
-          <Redirect to="/home" push/>
+          <Redirect to="/storehouse" push/>
           <Form componentClass="fieldset" inline justified>
             <ControlLabel id="hellomsg">Hello,&nbsp;&nbsp;&nbsp;&nbsp;{loginID}!</ControlLabel>
             <span class="ch13" ></span><span class="ch12" ></span>

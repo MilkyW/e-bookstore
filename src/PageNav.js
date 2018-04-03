@@ -22,7 +22,6 @@ class PageNav extends Component {
   hdsi(){
     this.setState({
       login: true,
-      ak: 1,
     });
   }
 
@@ -38,6 +37,7 @@ class PageNav extends Component {
   hdam(){
     this.setState({
       power: 0,
+      ak: 2,
     })
     this.render();
   }
@@ -45,6 +45,7 @@ class PageNav extends Component {
   hdcs(){
     this.setState({
       power: 1,
+      ak: 1,
     })
     this.render();
   }
@@ -86,7 +87,6 @@ class PageNav extends Component {
     return (
       <div>
         <Nav bsStyle="tabs" justified activeKey={this.state.ak} onSelect={this.handleSelect}>
-          <NavItem eventKey={1} class="llk"><Link to="/home">Home</Link></NavItem>
           <NavItem eventKey={2} class="llk"><Link to="/storehouse">Storehouse</Link></NavItem>
           <NavItem eventKey={3} class="llk"><Link to="/users">Users</Link></NavItem>
           <NavItem eventKey={4} class="llk"><Link to="/sales">Sales</Link></NavItem>
